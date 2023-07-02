@@ -1,5 +1,5 @@
 import sys
-INTEGER, PLUS, EOF = 'INTEGER', 'PLUS', 'EOF'
+INTEGER, PLUS, MINUS, EOF = 'INTEGER', 'PLUS', 'MINUS', 'EOF'
 
 class Token():
 
@@ -39,6 +39,10 @@ class Interpreter():
         if current_char == '+':
             self.pos += 1
             return Token(PLUS, current_char)
+        
+        if current_char == '-':
+            self.pos += 1
+            return Token(MINUS, current_char)
 
         self.error()
 
@@ -50,19 +54,28 @@ class Interpreter():
             self.error()
 
     def expr(self):
+        operation = None
         self.current_token = self.get_next_token()
 
         left = self.current_token
         self.eat(INTEGER)
 
         op = self.current_token
-        self.eat(PLUS)
+        if op.value == '+':
+            self.eat(PLUS)
+            operation = '+'
+        else:
+            self.eat(MINUS)
+            operation = '-'
 
         right = self.current_token
         self.eat(INTEGER)
 
-        result = left.value + right.value
-        return result
+        if operation == '+':
+            return left.value + right.value
+        else:
+            return left.value - right.value
+        
     
 
 def main():
