@@ -7,7 +7,6 @@ class Token():
         self.type = type
         self.value = value
 
-
     def __str__(self) -> str:
         return f"Token({self.type}, {self.value})"
     
@@ -49,12 +48,10 @@ class Interpreter():
     def eat(self, token_type):
         if self.current_token.type == token_type:
             self.current_token = self.get_next_token()
-
         else:
             self.error()
 
     def expr(self):
-        operation = None
         self.current_token = self.get_next_token()
 
         left = self.current_token
@@ -63,15 +60,13 @@ class Interpreter():
         op = self.current_token
         if op.value == '+':
             self.eat(PLUS)
-            operation = '+'
         else:
             self.eat(MINUS)
-            operation = '-'
 
         right = self.current_token
         self.eat(INTEGER)
 
-        if operation == '+':
+        if op.value == '+':
             return left.value + right.value
         else:
             return left.value - right.value
