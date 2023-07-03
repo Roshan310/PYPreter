@@ -53,9 +53,16 @@ class Interpreter():
 
     def expr(self):
         self.current_token = self.get_next_token()
-
+        two_digit = False
         left = self.current_token
         self.eat(INTEGER)
+
+        left2 = self.current_token
+        if left2.type == 'INTEGER':
+            self.eat(INTEGER)
+            two_digit = True
+        else:
+            pass
 
         op = self.current_token
         if op.value == '+':
@@ -66,9 +73,14 @@ class Interpreter():
         right = self.current_token
         self.eat(INTEGER)
 
+
         if op.value == '+':
+            if two_digit:
+                return int(str(left.value) + str(left2.value)) + right.value
             return left.value + right.value
         else:
+            if two_digit:
+                return int(str(left.value) + str(left2.value)) - right.value
             return left.value - right.value
         
     
