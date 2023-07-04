@@ -1,5 +1,5 @@
 import sys
-INTEGER, PLUS, MINUS, EOF = 'INTEGER', 'PLUS', 'MINUS', 'EOF'
+INTEGER, PLUS, MINUS, EOF, SPACE = 'INTEGER', 'PLUS', 'MINUS', 'EOF', 'SPACE'
 
 class Token():
 
@@ -31,6 +31,10 @@ class Interpreter():
         
         current_char = text[self.pos]
 
+        if current_char == ' ':
+            self.pos += 1
+            return Token(SPACE, current_char)
+
         if current_char.isdigit():
             self.pos += 1
             return Token(INTEGER, int(current_char))
@@ -54,6 +58,7 @@ class Interpreter():
     def expr(self):
         self.current_token = self.get_next_token()
         two_digit = False
+
         left = self.current_token
         self.eat(INTEGER)
 
@@ -84,7 +89,6 @@ class Interpreter():
             return left.value - right.value
         
     
-
 def main():
     while True:
         text = input("Calc> ")
